@@ -19,8 +19,14 @@ resource "aws_instance" "app_server" {
 
   key_name = "instancia_alura"
 
+  user_data = <<-EOF
+                 #!/bin/bash
+                 cd /home/ubuntu/
+                 echo "<h1>Nova Instancia AWS/Terraform</h1>" > index.html
+                 nohup busybox httpd -f -p 8080 &
+                 EOF
   tags = {
-    Name = "srv_ubuntu"
+    Name = "srv_ubtn_aws"
   }
 }
 
