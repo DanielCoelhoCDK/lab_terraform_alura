@@ -14,13 +14,13 @@ provider "aws" {
 }
 
 resource "aws_instance" "app_server" {
-  ami           = "ami-0016f9f0e89ee6ec6"
+  ami           = "ami-029f33a91738d30e9"
   instance_type = "t2.micro"
 
   key_name = "instancia_alura"
 
   tags = {
-    Name = "ServerInstance"
+    Name = "srv_ubuntu"
   }
 }
 
