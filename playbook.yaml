@@ -1,9 +1,36 @@
 - hosts: ansible-terraform
+  become: yes
   tasks:
-    - name: criando arquivo
-      copy:
-        dest: /home/ubuntu/index.html
-        content: <h1>Feito com Ansible e Terraform</h1>
+    - name: Testando conexão
+      ping:
+    - name: instalando o python e virtualenv
+      become: yes
+      apt:
+        pkg:
+          - python3
+          - python3-pip
+          - virtualenv
+        update_cache: yes
+        
+    - name: criando ambiente virtual
+      pip:
+        virtualenv: /home/ubuntu/tcc/venv
+        name: 
+          - django
+          - djangorestframework
+        state: present
+        
+      #   executable: pip3
+      #   state: present
+      # shell: "virtualenv -p python3 venv"
+      # args:
+      #   chdir: /home/ubuntu/tcc/venv
+
+      # cache_valid_time: 3600
+    # - name: criando arquivo
+    #   copy:
+    #     dest: /home/ubuntu/index.html
+    #     content: <h1>Feito com Ansible e Terraform</h1>
       
-    - name: criando o srv http
-      shell: "nohup busybox httpd -f -p 8080 &"
+    # - name: criando o srv http
+    #   shell: "nohup busybox httpd -f -p 8080 &"
