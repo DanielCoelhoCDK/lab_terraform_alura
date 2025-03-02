@@ -4,7 +4,6 @@
     - name: Testando conexão
       ping:
     - name: instalando o python e virtualenv
-      become: yes
       apt:
         pkg:
           - python3
@@ -18,10 +17,30 @@
         name: 
           - django
           - djangorestframework
-        state: present
         
-      #   executable: pip3
-      #   state: present
+    - name: Iniciando o servidor
+      shell: '. /home/ubuntu/tcc/venv/bin/activate; django-admin startproject setup /home/ubuntu/tcc/'
+      args:
+        chdir: /home/ubuntu/tcc
+        creates: /home/ubuntu/tcc/setup  
+
+    - name: Ajustar permissões do diretório
+      file:
+        path: /home/ubuntu/tcc
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+        recurse: yes
+        
+    - name: Alterando o hosts settings
+      lineinfile:
+        path: /home/ubuntu/tcc/setup/settings.py
+        regexp: 'ALLOWED_HOSTS'
+        line: 'ALLOWED_HOSTS = ["*"]'
+        backrefs: yes
+        
+      # executable: pip3
+      # state: present
       # shell: "virtualenv -p python3 venv"
       # args:
       #   chdir: /home/ubuntu/tcc/venv
